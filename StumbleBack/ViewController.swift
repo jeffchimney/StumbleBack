@@ -45,18 +45,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         searchResultsViewController.handleMapSearchDelegate = self
         
-        // set up center button
-        let stumbleImage = UIImage(named: "stumble")
-        let stumbleButton = UIButton(type: UIButtonType.Custom)
-        stumbleButton.frame = CGRectMake(0, 0, 100, 100)
-        stumbleButton.setImage(stumbleImage, forState: .Normal)
-        stumbleButton.addTarget(self, action: #selector(ViewController.stumblePressed(_:)), forControlEvents: .TouchUpInside)
-
-        stumbleButton.center = self.tabBar.center
-        
-        self.view.addSubview(stumbleButton)
-        
-        
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
         
@@ -71,6 +59,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             mapView.mapType = MKMapType(rawValue: 0)!
             mapView.userTrackingMode = MKUserTrackingMode(rawValue: 2)!
         }
+    }
+    
+    // layout subviews that rely on screen size constraints
+    override func viewDidLayoutSubviews() {
+        // set up center button
+        let stumbleImage = UIImage(named: "stumble")
+        let stumbleButton = UIButton(type: UIButtonType.Custom)
+        stumbleButton.frame = CGRectMake(0, 0, 75, 75)
+        stumbleButton.setImage(stumbleImage, forState: .Normal)
+        stumbleButton.addTarget(self, action: #selector(ViewController.stumblePressed(_:)), forControlEvents: .TouchUpInside)
+        
+        stumbleButton.center.x = tabBar.center.x
+        stumbleButton.center.y = tabBar.center.y - self.view.frame.height/40
+        
+        self.view.addSubview(stumbleButton)
     }
     
     // set up map location and zoom
