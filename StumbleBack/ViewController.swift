@@ -9,15 +9,143 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController {
+protocol HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark)
+}
 
-    @IBOutlet weak var stumbleButton: UIButton!
+class ViewController: UIViewController, CLLocationManagerDelegate {
+    
+    var selectedPin:MKPlacemark? = nil
+    var resultSearchController:UISearchController? = nil
+    
+    @IBOutlet weak var tabBar: UIToolbar!
     @IBOutlet weak var mapView: MKMapView!
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        stumbleButton.layer.zPosition = 1
+        
+        // Assign our search table view controller to handle to searches
+        let searchResultsViewController = storyboard!.instantiateViewControllerWithIdentifier("SearchTableViewController") as! SearchTableViewController
+        resultSearchController = UISearchController(searchResultsController: searchResultsViewController)
+        resultSearchController?.searchResultsUpdater = searchResultsViewController
+        
+        let searchBar = resultSearchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Where you stumblin' to?"
+        navigationItem.titleView = resultSearchController?.searchBar
+        
+        // set up search bar appearance
+        resultSearchController?.hidesNavigationBarDuringPresentation = false
+        resultSearchController?.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
+        
+        //hook up table view controller to the map view
+        searchResultsViewController.mapView = mapView
+        
+        searchResultsViewController.handleMapSearchDelegate = self
+        
+        // set up center button
+        let stumbleImage = UIImage(named: "stumble")
+        let stumbleButton = UIButton(type: UIButtonType.Custom)
+        stumbleButton.frame = CGRectMake(0, 0, 100, 100)
+        stumbleButton.setImage(stumbleImage, forState: .Normal)
+        stumbleButton.addTarget(self, action: #selector(ViewController.stumblePressed(_:)), forControlEvents: .TouchUpInside)
+
+        stumbleButton.center = self.tabBar.center
+        
+        self.view.addSubview(stumbleButton)
+        
+        
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation = true
+            mapView.mapType = MKMapType(rawValue: 0)!
+            mapView.userTrackingMode = MKUserTrackingMode(rawValue: 2)!
+        }
+    }
+    
+    // set up map location and zoom
+    let regionRadius: CLLocationDistance = 1000
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius, regionRadius)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    //locationManager delegate method
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue : CLLocationCoordinate2D = manager.location!.coordinate;
+        //var span = MKCoordinateSpanMake(0.075, 0.075)
+        let long = locValue.longitude;
+        let lat = locValue.latitude;
+        print(long);
+        print(lat);
+        centerMapOnLocation(locations.last!)
+        locationManager.stopUpdatingLocation();
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        locationManager.startUpdatingLocation()
+    }
+    
+    func getDirections(){
+        if let selectedPin = selectedPin {
+            let mapItem = MKMapItem(placemark: selectedPin)
+            print("You selected a pin")
+        }
+    }
+    
+    func stumblePressed(sender: UIButton) {
+        // stumble
     }
 }
 
+extension ViewController: HandleMapSearch {
+    func dropPinZoomIn(placemark:MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
+    }
+}
+
+extension ViewController : MKMapViewDelegate {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
+        if annotation is MKUserLocation {
+            //return nil so map view draws "blue dot" for standard user location
+            return nil
+        }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.pinTintColor = UIColor.orangeColor()
+        pinView?.canShowCallout = true
+        let smallSquare = CGSize(width: 30, height: 30)
+        let button = UIButton(frame: CGRect(origin: CGPointZero, size: smallSquare))
+        // ste the name of the UIImage to the button you'd like to show up when a pin is pressed.
+        button.setBackgroundImage(UIImage(named: "stumble"), forState: .Normal)
+        button.addTarget(self, action: "getDirections", forControlEvents: .TouchUpInside)
+        pinView?.leftCalloutAccessoryView = button
+        return pinView
+    }
+}

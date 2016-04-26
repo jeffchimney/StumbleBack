@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BE9614171CCEB59B00A85486 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9614161CCEB59B00A85486 /* MapKit.framework */; };
+		BEC648E41CCFD128002B7583 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC648E31CCFD128002B7583 /* CoreLocation.framework */; };
+		BEC648E61CCFF594002B7583 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */; };
 		BEE7A89D1CCEB32A00627407 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE7A89C1CCEB32A00627407 /* AppDelegate.swift */; };
 		BEE7A89F1CCEB32A00627407 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE7A89E1CCEB32A00627407 /* ViewController.swift */; };
 		BEE7A8A21CCEB32A00627407 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEE7A8A01CCEB32A00627407 /* Main.storyboard */; };
@@ -36,6 +38,8 @@
 
 /* Begin PBXFileReference section */
 		BE9614161CCEB59B00A85486 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BEC648E31CCFD128002B7583 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		BEE7A8991CCEB32A00627407 /* StumbleBack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StumbleBack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEE7A89C1CCEB32A00627407 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEE7A89E1CCEB32A00627407 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEC648E41CCFD128002B7583 /* CoreLocation.framework in Frameworks */,
 				BE9614171CCEB59B00A85486 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,6 +85,7 @@
 		BEE7A8901CCEB32A00627407 = {
 			isa = PBXGroup;
 			children = (
+				BEC648E31CCFD128002B7583 /* CoreLocation.framework */,
 				BEE7A89B1CCEB32A00627407 /* StumbleBack */,
 				BEE7A8B01CCEB32A00627407 /* StumbleBackTests */,
 				BEE7A8BB1CCEB32A00627407 /* StumbleBackUITests */,
@@ -103,6 +109,7 @@
 			children = (
 				BEE7A89C1CCEB32A00627407 /* AppDelegate.swift */,
 				BEE7A89E1CCEB32A00627407 /* ViewController.swift */,
+				BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */,
 				BEE7A8A01CCEB32A00627407 /* Main.storyboard */,
 				BEE7A8A31CCEB32A00627407 /* Assets.xcassets */,
 				BEE7A8A51CCEB32A00627407 /* LaunchScreen.storyboard */,
@@ -197,6 +204,7 @@
 				TargetAttributes = {
 					BEE7A8981CCEB32A00627407 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = JSZY8AYXNH;
 					};
 					BEE7A8AC1CCEB32A00627407 = {
 						CreatedOnToolsVersion = 7.3;
@@ -261,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEE7A89F1CCEB32A00627407 /* ViewController.swift in Sources */,
+				BEC648E61CCFF594002B7583 /* SearchTableViewController.swift in Sources */,
 				BEE7A89D1CCEB32A00627407 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,10 +414,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = StumbleBack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JeffsApps.StumbleBack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -416,10 +428,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = StumbleBack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JeffsApps.StumbleBack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
