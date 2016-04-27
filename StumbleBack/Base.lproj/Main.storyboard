@@ -5,6 +5,54 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
+        <!--Side Menu View Controller-->
+        <scene sceneID="Ptz-Ei-0sY">
+            <objects>
+                <viewController id="FR4-R2-QOJ" customClass="SideMenuViewController" customModule="StumbleBack" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SNA-cg-chx"/>
+                        <viewControllerLayoutGuide type="bottom" id="nLu-20-TAV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cIa-lu-bc1">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mil-N7-alS">
+                                <rect key="frame" x="0.0" y="93" width="600" height="414"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NavigationCell" id="YCP-n4-Wtp" customClass="NavigationCell" customModule="StumbleBack" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YCP-n4-Wtp" id="agZ-4L-wuq">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjS-GQ-3Vu">
+                                                    <rect key="frame" x="8" y="11" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="NjS-GQ-3Vu" id="3ja-yk-Gm6"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="mil-N7-alS" id="tjx-fl-rtr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tyZ-gs-jpU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="992" y="-223"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -22,7 +70,14 @@
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFR-ck-pHe">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items/>
+                                <items>
+                                    <barButtonItem image="settings" style="plain" id="zyO-bd-Dtw">
+                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="presentNavigation:" destination="BYZ-38-t0r" id="G1M-lN-4lh"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -40,7 +95,9 @@
                     <connections>
                         <outlet property="mapView" destination="eSL-6y-pZG" id="dAK-Pc-EB6"/>
                         <outlet property="searchDisplayController" destination="Uoz-xA-lia" id="wch-EH-dUX"/>
+                        <outlet property="settingsButton" destination="zyO-bd-Dtw" id="PXr-eU-4Bf"/>
                         <outlet property="tabBar" destination="JFR-ck-pHe" id="uXX-ez-uME"/>
+                        <segue destination="FR4-R2-QOJ" kind="presentation" identifier="presentNav" id="XXs-cm-K3T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -118,4 +175,7 @@
             <point key="canvasLocation" x="305" y="427"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settings" width="52" height="52"/>
+    </resources>
 </document>

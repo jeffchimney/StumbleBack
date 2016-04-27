@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE7D05B41CD1536D00F38CF9 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D05B31CD1536D00F38CF9 /* SideMenuViewController.swift */; };
+		BE7D05B81CD15C9A00F38CF9 /* TransitionOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D05B71CD15C9A00F38CF9 /* TransitionOperator.swift */; };
+		BE7D05BA1CD174DB00F38CF9 /* NavigationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */; };
 		BE9614171CCEB59B00A85486 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9614161CCEB59B00A85486 /* MapKit.framework */; };
 		BEC648E41CCFD128002B7583 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC648E31CCFD128002B7583 /* CoreLocation.framework */; };
 		BEC648E61CCFF594002B7583 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */; };
@@ -37,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE7D05B31CD1536D00F38CF9 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		BE7D05B71CD15C9A00F38CF9 /* TransitionOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionOperator.swift; sourceTree = "<group>"; };
+		BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationCell.swift; sourceTree = "<group>"; };
 		BE9614161CCEB59B00A85486 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BEC648E31CCFD128002B7583 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +116,9 @@
 				BEE7A89C1CCEB32A00627407 /* AppDelegate.swift */,
 				BEE7A89E1CCEB32A00627407 /* ViewController.swift */,
 				BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */,
+				BE7D05B31CD1536D00F38CF9 /* SideMenuViewController.swift */,
+				BE7D05B71CD15C9A00F38CF9 /* TransitionOperator.swift */,
+				BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */,
 				BEE7A8A01CCEB32A00627407 /* Main.storyboard */,
 				BEE7A8A31CCEB32A00627407 /* Assets.xcassets */,
 				BEE7A8A51CCEB32A00627407 /* LaunchScreen.storyboard */,
@@ -268,9 +277,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE7D05B41CD1536D00F38CF9 /* SideMenuViewController.swift in Sources */,
+				BE7D05B81CD15C9A00F38CF9 /* TransitionOperator.swift in Sources */,
 				BEE7A89F1CCEB32A00627407 /* ViewController.swift in Sources */,
 				BEC648E61CCFF594002B7583 /* SearchTableViewController.swift in Sources */,
 				BEE7A89D1CCEB32A00627407 /* AppDelegate.swift in Sources */,
+				BE7D05BA1CD174DB00F38CF9 /* NavigationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

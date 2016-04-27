@@ -5,6 +5,7 @@
 //  Created by Jeff Chimney on 2016-04-25.
 //  Copyright © 2016 Jeff Chimney. All rights reserved.
 //
+// CustomSegue class is at the bottom
 
 import UIKit
 import MapKit
@@ -18,9 +19,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var selectedPin:MKPlacemark? = nil
     var resultSearchController:UISearchController? = nil
     
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
     @IBOutlet weak var tabBar: UIToolbar!
     @IBOutlet weak var mapView: MKMapView!
     let locationManager = CLLocationManager()
+    let stumbleButton = UIButton(type: UIButtonType.Custom)
+    
+    var transitionOperator = TransitionOperator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,11 +66,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    var viewLayedOutSubviews = false
     // layout subviews that rely on screen size constraints
     override func viewDidLayoutSubviews() {
         // set up center button
         let stumbleImage = UIImage(named: "stumble")
-        let stumbleButton = UIButton(type: UIButtonType.Custom)
         stumbleButton.frame = CGRectMake(0, 0, 75, 75)
         stumbleButton.setImage(stumbleImage, forState: .Normal)
         stumbleButton.addTarget(self, action: #selector(ViewController.stumblePressed(_:)), forControlEvents: .TouchUpInside)
@@ -74,6 +79,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         stumbleButton.center.y = tabBar.center.y - self.view.frame.height/40
         
         self.view.addSubview(stumbleButton)
+        viewLayedOutSubviews = true
     }
     
     // set up map location and zoom
@@ -107,8 +113,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    var loading = false
     func stumblePressed(sender: UIButton) {
         // stumble
+        loading = true
+        if loading {
+            UIView.animateWithDuration(0.5, delay: 0, options: .CurveLinear, animations: { () -> Void in
+                sender.transform = CGAffineTransformRotate(sender.transform, CGFloat(M_PI_2))
+            }) { (finished) -> Void in
+                self.stumblePressed(sender)
+            }
+        }
+    }
+    
+    
+    func finishedLoading() {
+        loading = false
+    }
+    
+    @IBAction func presentNavigation(sender: AnyObject?){
+        performSegueWithIdentifier("presentNav", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let toViewController = segue.destinationViewController as UIViewController
+        self.modalPresentationStyle = UIModalPresentationStyle.Custom
+        toViewController.transitioningDelegate = transitionOperator
     }
 }
 
