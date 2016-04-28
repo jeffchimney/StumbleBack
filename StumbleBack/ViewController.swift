@@ -19,7 +19,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var selectedPin:MKPlacemark? = nil
     var resultSearchController:UISearchController? = nil
     
-    @IBOutlet weak var settingsButton: UIBarButtonItem!
+    @IBOutlet weak var menuSlider: UIImageView!
     @IBOutlet weak var tabBar: UIToolbar!
     @IBOutlet weak var mapView: MKMapView!
     let locationManager = CLLocationManager()
@@ -64,6 +64,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             mapView.mapType = MKMapType(rawValue: 0)!
             mapView.userTrackingMode = MKUserTrackingMode(rawValue: 2)!
         }
+        
+        menuSlider.image = UIImage(named: "menuSlider")
+        menuSlider.userInteractionEnabled = true
+        
+        // add taprecognizerto backgroundImage to return to main view
+        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.userDidSwipe(_:)))
+        //Add the recognizer to your view.
+        menuSlider.addGestureRecognizer(swipeRecognizer)
     }
     
     var viewLayedOutSubviews = false
@@ -101,7 +109,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         centerMapOnLocation(locations.last!)
         locationManager.stopUpdatingLocation();
     }
-    
+    //locationManager delegate method
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         locationManager.startUpdatingLocation()
     }
@@ -131,12 +139,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         loading = false
     }
     
+    func userDidSwipe(sender: UISwipeGestureRecognizer) {
+        if sender.direction == UISwipeGestureRecognizerDirection.Right {
+            performSegueWithIdentifier("presentNav", sender: self)
+        }
+    }
+    
     @IBAction func presentNavigation(sender: AnyObject?){
         performSegueWithIdentifier("presentNav", sender: self)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
         let toViewController = segue.destinationViewController as UIViewController
         self.modalPresentationStyle = UIModalPresentationStyle.Custom
         toViewController.transitioningDelegate = transitionOperator

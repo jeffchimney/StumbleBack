@@ -14,8 +14,6 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet var tableView   : UITableView!
     @IBOutlet var backgroundImage: UIImageView!
     
-    var pictureInPictureView: UIView!
-    
     var items : [NavigationModel]!
     
     override func viewDidLoad() {
@@ -38,10 +36,20 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         
         items = [item1, item2, item3, item4, item5]
         
-        // add taprecognizerto backgroundImage to return to main view
+        backgroundImage.userInteractionEnabled = true
+        
+        //--------- Gesture Recognizer Initialization ----------
+        
+        // set up gesture recognizers
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(SideMenuViewController.imageTapped(_:)))
-        //Add the recognizer to your view.
+        
+        let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(SideMenuViewController.userDidSwipe(_:)))
+        swipeLeftRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+        
+        //Add recognizers to view.
         backgroundImage.addGestureRecognizer(tapRecognizer)
+        backgroundImage.addGestureRecognizer(swipeLeftRecognizer)
+        tableView.addGestureRecognizer(swipeLeftRecognizer)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -70,6 +78,12 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         //tappedImageView will be the image view that was tapped.
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    func userDidSwipe(gestureRecognizer: UISwipeGestureRecognizer) {
+        //tappedImageView will be the image view that was tapped.
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent

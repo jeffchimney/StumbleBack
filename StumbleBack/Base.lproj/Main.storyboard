@@ -22,18 +22,18 @@
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Rz-Da-iyY">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mil-N7-alS">
-                                <rect key="frame" x="31" y="153" width="538" height="294"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mil-N7-alS">
+                                <rect key="frame" x="31" y="153" width="569" height="447"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NavigationCell" id="YCP-n4-Wtp" customClass="NavigationCell" customModule="StumbleBack" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="538" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="569" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YCP-n4-Wtp" id="agZ-4L-wuq">
-                                            <rect key="frame" x="0.0" y="0.0" width="538" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="569" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjS-GQ-3Vu">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjS-GQ-3Vu">
                                                     <rect key="frame" x="38" y="6" width="190" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="190" id="ex6-1N-pog"/>
@@ -62,9 +62,9 @@
                             <constraint firstItem="6Rz-Da-iyY" firstAttribute="top" secondItem="cIa-lu-bc1" secondAttribute="top" id="1Ap-Qc-k1h"/>
                             <constraint firstItem="mil-N7-alS" firstAttribute="top" secondItem="SNA-cg-chx" secondAttribute="bottom" multiplier="16:9" constant="117.44444444444444" id="7Lx-xt-lDb"/>
                             <constraint firstItem="6Rz-Da-iyY" firstAttribute="bottom" secondItem="nLu-20-TAV" secondAttribute="top" id="7TC-KG-xBS"/>
-                            <constraint firstItem="mil-N7-alS" firstAttribute="centerX" secondItem="6Rz-Da-iyY" secondAttribute="centerX" id="AKH-b8-EMn"/>
+                            <constraint firstItem="mil-N7-alS" firstAttribute="centerX" secondItem="6Rz-Da-iyY" secondAttribute="centerX" constant="15.5" id="AKH-b8-EMn"/>
                             <constraint firstAttribute="trailing" secondItem="6Rz-Da-iyY" secondAttribute="trailing" id="O2Z-sW-f0I"/>
-                            <constraint firstItem="mil-N7-alS" firstAttribute="centerY" secondItem="6Rz-Da-iyY" secondAttribute="centerY" id="OVr-dh-Jlh"/>
+                            <constraint firstItem="mil-N7-alS" firstAttribute="centerY" secondItem="6Rz-Da-iyY" secondAttribute="centerY" constant="76.5" id="OVr-dh-Jlh"/>
                             <constraint firstItem="6Rz-Da-iyY" firstAttribute="leading" secondItem="cIa-lu-bc1" secondAttribute="leading" id="Pad-fF-cui"/>
                             <constraint firstItem="mil-N7-alS" firstAttribute="leading" secondItem="cIa-lu-bc1" secondAttribute="leadingMargin" constant="11" id="Q4b-bt-kID"/>
                         </constraints>
@@ -95,15 +95,15 @@
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFR-ck-pHe">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items>
-                                    <barButtonItem image="settings" style="plain" id="zyO-bd-Dtw">
-                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <connections>
-                                            <action selector="presentNavigation:" destination="BYZ-38-t0r" id="G1M-lN-4lh"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
+                                <items/>
                             </toolbar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2lb-RH-Kr0">
+                                <rect key="frame" x="0.0" y="283" width="31" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="31" id="SYm-ZH-OSl"/>
+                                    <constraint firstAttribute="height" constant="40" id="l6t-EH-kLO"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -112,15 +112,17 @@
                             <constraint firstAttribute="trailing" secondItem="eSL-6y-pZG" secondAttribute="trailing" id="Mcb-vE-xay"/>
                             <constraint firstItem="JFR-ck-pHe" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="QjI-gY-skX"/>
                             <constraint firstItem="eSL-6y-pZG" firstAttribute="leading" secondItem="JFR-ck-pHe" secondAttribute="leading" id="R59-B2-WQ5"/>
+                            <constraint firstItem="2lb-RH-Kr0" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="3" id="V1l-3b-4fV"/>
                             <constraint firstItem="eSL-6y-pZG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="sbg-l6-kU5"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="eSL-6y-pZG" secondAttribute="bottom" constant="41" id="scU-QO-crz"/>
+                            <constraint firstItem="2lb-RH-Kr0" firstAttribute="leading" secondItem="JFR-ck-pHe" secondAttribute="leading" id="uft-4L-1ds"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Z8M-m2-bY7"/>
                     <connections>
                         <outlet property="mapView" destination="eSL-6y-pZG" id="dAK-Pc-EB6"/>
+                        <outlet property="menuSlider" destination="2lb-RH-Kr0" id="P1R-WM-3mF"/>
                         <outlet property="searchDisplayController" destination="Uoz-xA-lia" id="wch-EH-dUX"/>
-                        <outlet property="settingsButton" destination="zyO-bd-Dtw" id="PXr-eU-4Bf"/>
                         <outlet property="tabBar" destination="JFR-ck-pHe" id="uXX-ez-uME"/>
                         <segue destination="FR4-R2-QOJ" kind="presentation" identifier="presentNav" id="XXs-cm-K3T"/>
                     </connections>
@@ -200,7 +202,4 @@
             <point key="canvasLocation" x="305" y="427"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="settings" width="52" height="52"/>
-    </resources>
 </document>

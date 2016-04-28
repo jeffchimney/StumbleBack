@@ -15,7 +15,7 @@ class TransitionOperator: NSObject, UIViewControllerAnimatedTransitioning, UIVie
     var isPresenting : Bool = true
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.75
+        return 0.8
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -34,7 +34,7 @@ class TransitionOperator: NSObject, UIViewControllerAnimatedTransitioning, UIVie
         let toView = toViewController!.view
         
         let size = toView.frame.size
-        var offSetTransform = CGAffineTransformMakeTranslation(size.width - size.width/2, 0)
+        var offSetTransform = CGAffineTransformMakeTranslation(size.width - size.width/3.75, 0)
         offSetTransform = CGAffineTransformScale(offSetTransform, 0.6, 0.6)
         
         snapshot = fromView.snapshotViewAfterScreenUpdates(true)
