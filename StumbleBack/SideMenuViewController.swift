@@ -12,11 +12,16 @@ import UIKit
 class SideMenuViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var tableView   : UITableView!
+    @IBOutlet var backgroundImage: UIImageView!
+    
+    var pictureInPictureView: UIView!
     
     var items : [NavigationModel]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        backgroundImage.image = UIImage(named: "boozeShelf")
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -32,6 +37,11 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         let item5 = NavigationModel(title: "ABOUT")
         
         items = [item1, item2, item3, item4, item5]
+        
+        // add taprecognizerto backgroundImage to return to main view
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(SideMenuViewController.imageTapped(_:)))
+        //Add the recognizer to your view.
+        backgroundImage.addGestureRecognizer(tapRecognizer)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,9 +52,9 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         
         let cell = tableView.dequeueReusableCellWithIdentifier("NavigationCell") as! NavigationCell
         
-        //let item = items[indexPath.row]
+        let item = items[indexPath.row]
         
-        //cell.titleLabel.text = item.title
+        cell.titleLabel.text = item.title
         //cell.countLabel.text = item.count
         //cell.iconImageView.image = UIImage(named: item.icon)
         cell.backgroundColor = UIColor.clearColor()
@@ -53,6 +63,11 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imageTapped(gestureRecognizer: UITapGestureRecognizer) {
+        //tappedImageView will be the image view that was tapped.
         dismissViewControllerAnimated(true, completion: nil)
     }
     

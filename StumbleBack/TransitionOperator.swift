@@ -81,5 +81,6 @@ class TransitionOperator: NSObject, UIViewControllerAnimatedTransitioning, UIVie
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         self.isPresenting = false
-        return self    }
+        return self
+    }
 }
