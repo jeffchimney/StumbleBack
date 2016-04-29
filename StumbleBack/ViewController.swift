@@ -141,6 +141,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func userDidSwipe(sender: UISwipeGestureRecognizer) {
         if sender.direction == UISwipeGestureRecognizerDirection.Right {
+            loading = false
             performSegueWithIdentifier("presentNav", sender: self)
         }
     }
