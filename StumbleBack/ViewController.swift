@@ -145,7 +145,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    @IBAction func presentNavigation(sender: AnyObject?){
+    func presentNavigation(){
         performSegueWithIdentifier("presentNav", sender: self)
     }
     

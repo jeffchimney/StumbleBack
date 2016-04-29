@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE3D7A971CD3F5F700C5430E /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A961CD3F5F700C5430E /* AboutViewController.swift */; };
+		BE3D7A991CD3F60700C5430E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A981CD3F60700C5430E /* SettingsViewController.swift */; };
+		BE3D7A9B1CD3F61200C5430E /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A9A1CD3F61200C5430E /* FriendsViewController.swift */; };
+		BE3D7A9D1CD3F62900C5430E /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A9C1CD3F62900C5430E /* AccountViewController.swift */; };
 		BE7D05B41CD1536D00F38CF9 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D05B31CD1536D00F38CF9 /* SideMenuViewController.swift */; };
 		BE7D05B81CD15C9A00F38CF9 /* TransitionOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D05B71CD15C9A00F38CF9 /* TransitionOperator.swift */; };
 		BE7D05BA1CD174DB00F38CF9 /* NavigationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */; };
@@ -40,6 +44,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE3D7A961CD3F5F700C5430E /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		BE3D7A981CD3F60700C5430E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		BE3D7A9A1CD3F61200C5430E /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		BE3D7A9C1CD3F62900C5430E /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		BE7D05B31CD1536D00F38CF9 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		BE7D05B71CD15C9A00F38CF9 /* TransitionOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionOperator.swift; sourceTree = "<group>"; };
 		BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationCell.swift; sourceTree = "<group>"; };
@@ -113,15 +121,19 @@
 		BEE7A89B1CCEB32A00627407 /* StumbleBack */ = {
 			isa = PBXGroup;
 			children = (
+				BEE7A8A31CCEB32A00627407 /* Assets.xcassets */,
+				BE3D7A961CD3F5F700C5430E /* AboutViewController.swift */,
+				BE3D7A9C1CD3F62900C5430E /* AccountViewController.swift */,
 				BEE7A89C1CCEB32A00627407 /* AppDelegate.swift */,
-				BEE7A89E1CCEB32A00627407 /* ViewController.swift */,
+				BE3D7A9A1CD3F61200C5430E /* FriendsViewController.swift */,
+				BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */,
 				BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */,
+				BE3D7A981CD3F60700C5430E /* SettingsViewController.swift */,
 				BE7D05B31CD1536D00F38CF9 /* SideMenuViewController.swift */,
 				BE7D05B71CD15C9A00F38CF9 /* TransitionOperator.swift */,
-				BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */,
-				BEE7A8A01CCEB32A00627407 /* Main.storyboard */,
-				BEE7A8A31CCEB32A00627407 /* Assets.xcassets */,
+				BEE7A89E1CCEB32A00627407 /* ViewController.swift */,
 				BEE7A8A51CCEB32A00627407 /* LaunchScreen.storyboard */,
+				BEE7A8A01CCEB32A00627407 /* Main.storyboard */,
 				BEE7A8A81CCEB32A00627407 /* Info.plist */,
 			);
 			path = StumbleBack;
@@ -278,11 +290,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE7D05B41CD1536D00F38CF9 /* SideMenuViewController.swift in Sources */,
+				BE3D7A9B1CD3F61200C5430E /* FriendsViewController.swift in Sources */,
 				BE7D05B81CD15C9A00F38CF9 /* TransitionOperator.swift in Sources */,
 				BEE7A89F1CCEB32A00627407 /* ViewController.swift in Sources */,
+				BE3D7A971CD3F5F700C5430E /* AboutViewController.swift in Sources */,
 				BEC648E61CCFF594002B7583 /* SearchTableViewController.swift in Sources */,
+				BE3D7A9D1CD3F62900C5430E /* AccountViewController.swift in Sources */,
 				BEE7A89D1CCEB32A00627407 /* AppDelegate.swift in Sources */,
 				BE7D05BA1CD174DB00F38CF9 /* NavigationCell.swift in Sources */,
+				BE3D7A991CD3F60700C5430E /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

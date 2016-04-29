@@ -11,10 +11,13 @@ import UIKit
 
 class SideMenuViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var transitionOperator = TransitionOperator()
+    
     @IBOutlet var tableView   : UITableView!
     @IBOutlet var backgroundImage: UIImageView!
     
     var items : [NavigationModel]!
+    var expanded = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +32,12 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         self.view.backgroundColor = UIColor.blackColor()
         
         let item1 = NavigationModel(title: "MY ACCOUNT")
-        let item2 = NavigationModel(title: "COMMENTS", count: "3")
-        let item3 = NavigationModel(title: "FAVORITES")
-        let item4 = NavigationModel(title: "SETTINGS")
-        let item5 = NavigationModel(title: "ABOUT")
+        let item2 = NavigationModel(title: "FRIENDS")
+        let item3 = NavigationModel(title: "SETTINGS")
+        let item4 = NavigationModel(title: "ABOUT")
         
-        items = [item1, item2, item3, item4, item5]
+        items = [item1, item2, item3, item4]
+        expanded = [false, false, false, false]
         
         backgroundImage.userInteractionEnabled = true
         
@@ -53,7 +56,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 4
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -71,7 +74,23 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        dismissViewControllerAnimated(true, completion: nil)
+        //dismissViewControllerAnimated(true, completion: nil)
+        switch indexPath.item {
+        case 0:
+            expanded = [true, false, false, false]
+            toAccount()
+            
+        case 1:
+            expanded = [false, true, false, false]
+            toFriends()
+        case 2:
+            expanded = [false, false, true, false]
+            toSettings()
+        case 3:
+            expanded = [false, false, false, true]
+            toAbout()
+        default: break
+        }
     }
     
     func imageTapped(gestureRecognizer: UITapGestureRecognizer) {
@@ -87,6 +106,28 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let toViewController = segue.destinationViewController as UIViewController
+        self.modalPresentationStyle = UIModalPresentationStyle.Custom
+        toViewController.transitioningDelegate = transitionOperator
+    }
+    
+    func toAccount(){
+        //performSegueWithIdentifier("toAccount", sender: self)
+    }
+    
+    func toFriends(){
+        //performSegueWithIdentifier("toFriends", sender: self)
+    }
+    
+    func toSettings(){
+        //performSegueWithIdentifier("toSettings", sender: self)
+    }
+    
+    func toAbout(){
+        //performSegueWithIdentifier("toAbout", sender: self)
     }
 }
 
