@@ -99,11 +99,11 @@
 		BEE7A8901CCEB32A00627407 = {
 			isa = PBXGroup;
 			children = (
-				BEC648E31CCFD128002B7583 /* CoreLocation.framework */,
 				BEE7A89B1CCEB32A00627407 /* StumbleBack */,
 				BEE7A8B01CCEB32A00627407 /* StumbleBackTests */,
 				BEE7A8BB1CCEB32A00627407 /* StumbleBackUITests */,
 				BEE7A89A1CCEB32A00627407 /* Products */,
+				BEC648E31CCFD128002B7583 /* CoreLocation.framework */,
 				BE9614161CCEB59B00A85486 /* MapKit.framework */,
 			);
 			sourceTree = "<group>";

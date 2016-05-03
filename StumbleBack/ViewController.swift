@@ -14,10 +14,12 @@ protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, HandleMapSearch {
     
     var selectedPin:MKPlacemark? = nil
     var resultSearchController:UISearchController? = nil
+    
+    var timer = NSTimer()
     
     @IBOutlet weak var menuSlider: UIImageView!
     @IBOutlet weak var tabBar: UIToolbar!
@@ -25,10 +27,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
     let stumbleButton = UIButton(type: UIButtonType.Custom)
     
+    var comfortableDistance = 0
+    var difficultDistance = 0
+    var wontWalkFartherThanDistance = 0
+    
     var transitionOperator = TransitionOperator()
     
+    var innerCircle: MKCircle = MKCircle()
+    var middleCircle: MKCircle = MKCircle()
+    var outerCircle: MKCircle = MKCircle()
+    
+    
+    // ---------------------------------------------------------------------
+    // ------------------ DID LOAD/LAYOUT SUBVIEWS  (SETUP) ----------------
+    // ---------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.delegate = self
         
         // Assign our search table view controller to handle to searches
         let searchResultsViewController = storyboard!.instantiateViewControllerWithIdentifier("SearchTableViewController") as! SearchTableViewController
@@ -72,6 +88,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.userDidSwipe(_:)))
         //Add the recognizer to your view.
         menuSlider.addGestureRecognizer(swipeRecognizer)
+        
+        //this wont always be hard coded.
+        comfortableDistance = 1000
+        difficultDistance = 2000
+        wontWalkFartherThanDistance = 2500
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateWalkingRadiusBasedOnLocation), userInfo: nil, repeats: true)
     }
     
     var viewLayedOutSubviews = false
@@ -90,37 +113,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         viewLayedOutSubviews = true
     }
     
-    // set up map location and zoom
-    let regionRadius: CLLocationDistance = 1000
-    func centerMapOnLocation(location: CLLocation) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-                                                                  regionRadius, regionRadius)
-        mapView.setRegion(coordinateRegion, animated: true)
-    }
-    
-    //locationManager delegate method
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue : CLLocationCoordinate2D = manager.location!.coordinate;
-        //var span = MKCoordinateSpanMake(0.075, 0.075)
-        let long = locValue.longitude;
-        let lat = locValue.latitude;
-        print(long);
-        print(lat);
-        centerMapOnLocation(locations.last!)
-        locationManager.stopUpdatingLocation();
-    }
-    //locationManager delegate method
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        locationManager.startUpdatingLocation()
-    }
-    
-    func getDirections(){
-        if let selectedPin = selectedPin {
-            let mapItem = MKMapItem(placemark: selectedPin)
-            print("You selected a pin")
-        }
-    }
-    
     var loading = false
     func stumblePressed(sender: UIButton) {
         // stumble
@@ -134,10 +126,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
     func finishedLoading() {
         loading = false
     }
+    
+    // ---------------------------------------------------------------------
+    // ----------------------- NAVIGATION FUNCTIONS ------------------------
+    // ---------------------------------------------------------------------
     
     func userDidSwipe(sender: UISwipeGestureRecognizer) {
         if sender.direction == UISwipeGestureRecognizerDirection.Right {
@@ -155,29 +150,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.modalPresentationStyle = UIModalPresentationStyle.Custom
         toViewController.transitioningDelegate = transitionOperator
     }
-}
-
-extension ViewController: HandleMapSearch {
-    func dropPinZoomIn(placemark:MKPlacemark){
-        // cache the pin
-        selectedPin = placemark
-        // clear existing pins
-        mapView.removeAnnotations(mapView.annotations)
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = placemark.coordinate
-        annotation.title = placemark.name
-        if let city = placemark.locality,
-            let state = placemark.administrativeArea {
-            annotation.subtitle = "\(city) \(state)"
-        }
-        mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.05, 0.05)
-        let region = MKCoordinateRegionMake(placemark.coordinate, span)
-        mapView.setRegion(region, animated: true)
-    }
-}
-
-extension ViewController : MKMapViewDelegate {
+    
+    // --------------------------------------------------------------
+    // ----------------------- MAP FUNCTIONS ------------------------
+    // --------------------------------------------------------------
+    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
         if annotation is MKUserLocation {
             //return nil so map view draws "blue dot" for standard user location
@@ -195,5 +172,96 @@ extension ViewController : MKMapViewDelegate {
         button.addTarget(self, action: "getDirections", forControlEvents: .TouchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
+    }
+    
+    func getDirections(){
+        if let selectedPin = selectedPin {
+            let mapItem = MKMapItem(placemark: selectedPin)
+            print("You selected a pin")
+        }
+    }
+    
+    // set up map location and zoom
+    let regionRadius: CLLocationDistance = 5000
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius, regionRadius)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    //locationManager delegate method
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //let locValue : CLLocationCoordinate2D = manager.location!.coordinate;
+        //var span = MKCoordinateSpanMake(0.075, 0.075)
+        //let long = locValue.longitude;
+        //let lat = locValue.latitude;
+        centerMapOnLocation(locations.last!)
+        
+        locationManager.stopUpdatingLocation();
+    }
+    //locationManager delegate method
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        locationManager.startUpdatingLocation()
+    }
+    
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        if let overlay = overlay as? MKCircle {
+            if overlay == innerCircle {
+                let circleRenderer = MKCircleRenderer(circle: overlay)
+                circleRenderer.fillColor = UIColor.blueColor()
+                circleRenderer.alpha = 0.5
+                return circleRenderer
+            } else if overlay == middleCircle {
+                let circleRenderer = MKCircleRenderer(circle: overlay)
+                circleRenderer.fillColor = UIColor.blueColor()
+                circleRenderer.alpha = 0.25
+                return circleRenderer
+            } else if overlay == outerCircle {
+                let circleRenderer = MKCircleRenderer(circle: overlay)
+                circleRenderer.fillColor = UIColor.blueColor()
+                circleRenderer.alpha = 0.125
+                return circleRenderer
+            }
+        }
+        let defaultCircle = MKCircleRenderer()
+        return defaultCircle
+    }
+    
+    func updateWalkingRadiusBasedOnLocation() {
+        let userLocLat = mapView.userLocation.coordinate.latitude
+        let userLocLong = mapView.userLocation.coordinate.longitude
+        let userLoc = CLLocationCoordinate2DMake(userLocLat, userLocLong)
+        
+        let radius1 = CLLocationDistance(comfortableDistance)
+        let radius2 = CLLocationDistance(difficultDistance)
+        let radius3 = CLLocationDistance(wontWalkFartherThanDistance)
+        
+        innerCircle = MKCircle(centerCoordinate: userLoc, radius: radius1)
+        middleCircle = MKCircle(centerCoordinate: userLoc, radius: radius2)
+        outerCircle = MKCircle(centerCoordinate: userLoc, radius: radius3)
+        
+        mapView.removeOverlays(mapView.overlays)
+        mapView.addOverlay(innerCircle)
+        mapView.addOverlay(middleCircle)
+        mapView.addOverlay(outerCircle)
+    }
+    
+    // Map Search Pin Drop
+    func dropPinZoomIn(placemark:MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
     }
 }
