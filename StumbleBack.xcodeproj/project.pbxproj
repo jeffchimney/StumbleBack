@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE0297E21CDA5BD3009E3E14 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE0297E11CDA5BD3009E3E14 /* CloudKit.framework */; };
+		BE0297E41CDA6AED009E3E14 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0297E31CDA6AED009E3E14 /* CloudKitHelper.swift */; };
 		BE3D7A971CD3F5F700C5430E /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A961CD3F5F700C5430E /* AboutViewController.swift */; };
 		BE3D7A991CD3F60700C5430E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A981CD3F60700C5430E /* SettingsViewController.swift */; };
 		BE3D7A9B1CD3F61200C5430E /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D7A9A1CD3F61200C5430E /* FriendsViewController.swift */; };
@@ -44,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE0297E01CDA5BC8009E3E14 /* StumbleBack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StumbleBack.entitlements; sourceTree = "<group>"; };
+		BE0297E11CDA5BD3009E3E14 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		BE0297E31CDA6AED009E3E14 /* CloudKitHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		BE3D7A961CD3F5F700C5430E /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		BE3D7A981CD3F60700C5430E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BE3D7A9A1CD3F61200C5430E /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE0297E21CDA5BD3009E3E14 /* CloudKit.framework in Frameworks */,
 				BEC648E41CCFD128002B7583 /* CoreLocation.framework in Frameworks */,
 				BE9614171CCEB59B00A85486 /* MapKit.framework in Frameworks */,
 			);
@@ -99,6 +105,7 @@
 		BEE7A8901CCEB32A00627407 = {
 			isa = PBXGroup;
 			children = (
+				BE0297E11CDA5BD3009E3E14 /* CloudKit.framework */,
 				BEE7A89B1CCEB32A00627407 /* StumbleBack */,
 				BEE7A8B01CCEB32A00627407 /* StumbleBackTests */,
 				BEE7A8BB1CCEB32A00627407 /* StumbleBackUITests */,
@@ -121,10 +128,12 @@
 		BEE7A89B1CCEB32A00627407 /* StumbleBack */ = {
 			isa = PBXGroup;
 			children = (
+				BE0297E01CDA5BC8009E3E14 /* StumbleBack.entitlements */,
 				BEE7A8A31CCEB32A00627407 /* Assets.xcassets */,
 				BE3D7A961CD3F5F700C5430E /* AboutViewController.swift */,
 				BE3D7A9C1CD3F62900C5430E /* AccountViewController.swift */,
 				BEE7A89C1CCEB32A00627407 /* AppDelegate.swift */,
+				BE0297E31CDA6AED009E3E14 /* CloudKitHelper.swift */,
 				BE3D7A9A1CD3F61200C5430E /* FriendsViewController.swift */,
 				BE7D05B91CD174DB00F38CF9 /* NavigationCell.swift */,
 				BEC648E51CCFF594002B7583 /* SearchTableViewController.swift */,
@@ -226,6 +235,11 @@
 					BEE7A8981CCEB32A00627407 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = JSZY8AYXNH;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					BEE7A8AC1CCEB32A00627407 = {
 						CreatedOnToolsVersion = 7.3;
@@ -299,6 +313,7 @@
 				BEE7A89D1CCEB32A00627407 /* AppDelegate.swift in Sources */,
 				BE7D05BA1CD174DB00F38CF9 /* NavigationCell.swift in Sources */,
 				BE3D7A991CD3F60700C5430E /* SettingsViewController.swift in Sources */,
+				BE0297E41CDA6AED009E3E14 /* CloudKitHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +457,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = StumbleBack/StumbleBack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = StumbleBack/Info.plist;
@@ -456,6 +472,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = StumbleBack/StumbleBack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = StumbleBack/Info.plist;

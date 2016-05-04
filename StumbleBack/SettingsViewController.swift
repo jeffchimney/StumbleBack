@@ -10,8 +10,14 @@ import Foundation
 import UIKit
 
 class SettingsViewController : UIViewController {
+    
+    var cloudKitHelper = CloudKitHelper()
+    var deviceId: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
         
         let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(SideMenuViewController.userDidSwipe(_:)))
         swipeLeftRecognizer.direction = UISwipeGestureRecognizerDirection.Left

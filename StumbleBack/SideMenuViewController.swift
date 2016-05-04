@@ -109,9 +109,16 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let toViewController = segue.destinationViewController as UIViewController
-        self.modalPresentationStyle = UIModalPresentationStyle.Custom
-        toViewController.transitioningDelegate = transitionOperator
+        //let toViewController = segue.destinationViewController as UIViewController
+        //self.modalPresentationStyle = UIModalPresentationStyle.Custom
+        //toViewController.transitioningDelegate = transitionOperator
+        
+        if segue.identifier == "toSettings" {
+            if let controller = segue.destinationViewController as? UIViewController {
+                //controller.popoverPresentationController!.delegate = self
+                controller.preferredContentSize = CGSize(width: 320, height: 186)
+            }
+        }
     }
     
     func toAccount(){
@@ -123,7 +130,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func toSettings(){
-        //performSegueWithIdentifier("toSettings", sender: self)
+        performSegueWithIdentifier("toSettings", sender: self)
     }
     
     func toAbout(){

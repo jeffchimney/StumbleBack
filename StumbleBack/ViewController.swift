@@ -36,6 +36,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var innerCircle: MKCircle = MKCircle()
     var middleCircle: MKCircle = MKCircle()
     var outerCircle: MKCircle = MKCircle()
+    //var deviceId = ""
+    
+    var cloudKitHelper = CloudKitHelper()
     
     
     // ---------------------------------------------------------------------
@@ -45,6 +48,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         super.viewDidLoad()
         
         mapView.delegate = self
+        
+        // user info
+        let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+        print(deviceId)
+        cloudKitHelper.saveDeviceIdRecord(deviceId)
         
         // Assign our search table view controller to handle to searches
         let searchResultsViewController = storyboard!.instantiateViewControllerWithIdentifier("SearchTableViewController") as! SearchTableViewController
@@ -169,7 +177,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let button = UIButton(frame: CGRect(origin: CGPointZero, size: smallSquare))
         // ste the name of the UIImage to the button you'd like to show up when a pin is pressed.
         button.setBackgroundImage(UIImage(named: "stumble"), forState: .Normal)
-        button.addTarget(self, action: "getDirections", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(ViewController.getDirections), forControlEvents: .TouchUpInside)
         pinView?.leftCalloutAccessoryView = button
         return pinView
     }
