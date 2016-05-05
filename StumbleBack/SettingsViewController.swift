@@ -14,20 +14,26 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     var cloudKitHelper = CloudKitHelper()
     var deviceId: String = ""
     
-    var heightSystems = ["cms","ft"]
-    var weightSystems = ["kgs", "lbs"]
+    var heightSystems = ["ft","cms"]
+    var weightSystems = ["lbs", "kgs"]
+    var distanceSystems = ["mi","kms"]
     var heightsImperial = [String]()
     var heightsMetric = [String]()
-    var weightsImperial = [Double]()
-    var weightsMetric = [Double]()
+    var weightsImperial = [String]()
+    var weightsMetric = [String]()
     
-    var currentlySelectedSystem = "cms"
-    var currentlySelectedWeightSystem = "kgs"
+    var currentlySelectedSystem = "ft"
+    var currentlySelectedWeightSystem = "lbs"
+    var currentlySelectedDistanceSystem = "mi"
     
     @IBOutlet var systemWeightPickerView: UIPickerView!
     @IBOutlet var weightPickerView: UIPickerView!
     @IBOutlet weak var systemHeightPickerView: UIPickerView!
     @IBOutlet weak var heightPickerView: UIPickerView!
+    @IBOutlet weak var distanceSystemPickerView: UIPickerView!
+    @IBOutlet weak var easyPicker: UIPickerView!
+    @IBOutlet weak var hardPicker: UIPickerView!
+    @IBOutlet weak var impossiblePicker: UIPickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,14 +47,25 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
         
         systemHeightPickerView.dataSource = self
         heightPickerView.dataSource = self
+        systemWeightPickerView.dataSource = self
+        weightPickerView.dataSource = self
+        distanceSystemPickerView.dataSource = self
+        easyPicker.dataSource = self
+        hardPicker.dataSource = self
+        impossiblePicker.dataSource = self
+        
         systemHeightPickerView.delegate = self
         heightPickerView.delegate = self
+        systemWeightPickerView.delegate = self
+        weightPickerView.delegate = self
+        distanceSystemPickerView.delegate = self
+        easyPicker.delegate = self
+        hardPicker.delegate = self
+        impossiblePicker.delegate = self
         
-        var heightIndex = 0
         for i in 3 ... 8 {
             for j in 0...11 {
                 heightsImperial.append("\(i)' \(j)''")
-                heightIndex += 1
             }
         }
         for i in 100 ... 300 {
@@ -57,8 +74,8 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
         
         
         for i in 70 ... 400 {
-            weightsImperial.append(Double(i))
-            weightsMetric.append(Double(i) * 0.454)
+            weightsImperial.append("\(i)")
+            weightsMetric.append("\(Double(i) * 0.454)")
         }
     }
     
@@ -75,15 +92,15 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
         
         if pickerView == systemHeightPickerView {
             return heightSystems.count
-        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[0] {
-            return heightsMetric.count
         } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[1] {
+            return heightsMetric.count
+        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[0] {
             return heightsMetric.count
         } else if pickerView == systemWeightPickerView {
             return weightSystems.count
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[0]) {
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[1] {
             return weightsMetric.count
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[1]) {
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[0] {
             return weightsImperial.count
         } else {
             return 1 // something went wrong
@@ -93,9 +110,9 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == systemHeightPickerView {
             return heightSystems[row]
-        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[0] {
-            return heightsMetric[row]
         } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[1] {
+            return heightsMetric[row]
+        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[0] {
             if row < heightsImperial.count {
                 return heightsImperial[row]
             } else {
@@ -103,10 +120,10 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
             }
         } else if pickerView == systemWeightPickerView {
             return weightSystems[row]
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[0]) {
-            return "\(weightsMetric[row])"
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[1]) {
-            return "\(weightsImperial[row])"
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[1] {
+            return String(format: "%.1f", Double(weightsMetric[row])!)
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[0] {
+            return weightsImperial[row]
         }else {
             return "Something went wrong"
         }
@@ -115,26 +132,26 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
         if pickerView == systemHeightPickerView {
-            if(row == 0) {
-                currentlySelectedSystem = heightSystems[0]
-                heightPickerView.selectRow(100, inComponent: 0, animated: true)
-            } else {
-                heightPickerView.selectRow(36, inComponent: 0, animated: true)
+            if(row == 1) {
                 currentlySelectedSystem = heightSystems[1]
+                heightPickerView.selectRow(75, inComponent: 0, animated: true)
+            } else {
+                heightPickerView.selectRow(30, inComponent: 0, animated: true)
+                currentlySelectedSystem = heightSystems[0]
             }
         } else if pickerView == heightPickerView {
-            if currentlySelectedSystem == heightSystems[1] {
+            if currentlySelectedSystem == heightSystems[0] {
                 if row > heightsImperial.count {
                     heightPickerView.selectRow(heightsImperial.count-1, inComponent: 0, animated: true)
                 }
             }
         } else if pickerView == systemWeightPickerView  {
-            if(row == 0) {
-                currentlySelectedWeightSystem = String(weightSystems[0])
-                weightPickerView.selectRow(100, inComponent: 0, animated: true)
+            if(row == 1) {
+                currentlySelectedWeightSystem = weightSystems[1]
+                weightPickerView.selectRow(88, inComponent: 0, animated: true)
             } else {
+                currentlySelectedWeightSystem = weightSystems[0]
                 weightPickerView.selectRow(100, inComponent: 0, animated: true)
-                currentlySelectedWeightSystem = String(weightSystems[1])
             }
         }
     }
