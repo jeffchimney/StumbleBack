@@ -14,11 +14,21 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     var cloudKitHelper = CloudKitHelper()
     var deviceId: String = ""
     
-    var heightSystems = ["Metric","Imperial"]
-    var heights = [String]()
+    var heightSystems = ["cms","ft"]
+    var weightSystems = ["kgs", "lbs"]
+    var heightsImperial = [String]()
+    var heightsMetric = [String]()
+    var weightsImperial = [Double]()
+    var weightsMetric = [Double]()
     
+    var currentlySelectedSystem = "cms"
+    var currentlySelectedWeightSystem = "kgs"
+    
+    @IBOutlet var systemWeightPickerView: UIPickerView!
+    @IBOutlet var weightPickerView: UIPickerView!
     @IBOutlet weak var systemHeightPickerView: UIPickerView!
     @IBOutlet weak var heightPickerView: UIPickerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,11 +45,20 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
         heightPickerView.delegate = self
         
         var heightIndex = 0
-        for i in 3 ... 9 {
+        for i in 3 ... 8 {
             for j in 0...11 {
-                heights[heightIndex] = "\(i)' \(j)''"
+                heightsImperial.append("\(i)' \(j)''")
                 heightIndex += 1
             }
+        }
+        for i in 100 ... 300 {
+            heightsMetric.append("\(i)")
+        }
+        
+        
+        for i in 70 ... 400 {
+            weightsImperial.append(Double(i))
+            weightsMetric.append(Double(i) * 0.454)
         }
     }
     
@@ -49,23 +68,74 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        1
+        return 1
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         if pickerView == systemHeightPickerView {
             return heightSystems.count
-        } else if pickerView == heightPickerView {
-            return heights.count
+        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[0] {
+            return heightsMetric.count
+        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[1] {
+            return heightsMetric.count
+        } else if pickerView == systemWeightPickerView {
+            return weightSystems.count
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[0] {
+            return weightsMetric.count
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[1] {
+            return weightsMetric.count
+        } else {
+            return 1 // something went wrong
         }
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == systemHeightPickerView {
             return heightSystems[row]
+        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[0] {
+            return heightsMetric[row]
+        } else if pickerView == heightPickerView && currentlySelectedSystem == heightSystems[1] {
+            if row < heightsImperial.count {
+                return heightsImperial[row]
+            } else {
+                return "-" // this is just a placehoder because the metric picker is bigger than the imperial picker
+            }
+        } else if pickerView == systemWeightPickerView {
+            return weightSystems[row]
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[0] {
+            return "\(weightsMetric[row])"
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[1] {
+            return "\(weightsImperial[row])"
+        }else {
+            return "Something went wrong"
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        if pickerView == systemHeightPickerView {
+            if(row == 0) {
+                currentlySelectedSystem = heightSystems[0]
+                heightPickerView.selectRow(100, inComponent: 0, animated: true)
+            } else {
+                heightPickerView.selectRow(36, inComponent: 0, animated: true)
+                currentlySelectedSystem = heightSystems[1]
+            }
         } else if pickerView == heightPickerView {
-            return heights[row]
+            if currentlySelectedSystem == heightSystems[1] {
+                if row > heightsImperial.count {
+                    heightPickerView.selectRow(heightsImperial.count-1, inComponent: 0, animated: true)
+                }
+            }
+        } else if pickerView == systemWeightPickerView  {
+            if(row == 0) {
+                currentlySelectedWeightSystem = weightSystems[0]
+                weightPickerView.selectRow(100, inComponent: 0, animated: true)
+            } else {
+                weightPickerView.selectRow(100, inComponent: 0, animated: true)
+                currentlySelectedWeightSystem = weightSystems[1]
+            }
         }
     }
 }
