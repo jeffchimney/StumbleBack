@@ -81,10 +81,10 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
             return heightsMetric.count
         } else if pickerView == systemWeightPickerView {
             return weightSystems.count
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[0] {
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[0]) {
             return weightsMetric.count
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[1] {
-            return weightsMetric.count
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[1]) {
+            return weightsImperial.count
         } else {
             return 1 // something went wrong
         }
@@ -103,9 +103,9 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
             }
         } else if pickerView == systemWeightPickerView {
             return weightSystems[row]
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[0] {
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[0]) {
             return "\(weightsMetric[row])"
-        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == weightSystems[1] {
+        } else if pickerView == weightPickerView && currentlySelectedWeightSystem == String(weightSystems[1]) {
             return "\(weightsImperial[row])"
         }else {
             return "Something went wrong"
@@ -130,11 +130,11 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
             }
         } else if pickerView == systemWeightPickerView  {
             if(row == 0) {
-                currentlySelectedWeightSystem = weightSystems[0]
+                currentlySelectedWeightSystem = String(weightSystems[0])
                 weightPickerView.selectRow(100, inComponent: 0, animated: true)
             } else {
                 weightPickerView.selectRow(100, inComponent: 0, animated: true)
-                currentlySelectedWeightSystem = weightSystems[1]
+                currentlySelectedWeightSystem = String(weightSystems[1])
             }
         }
     }
