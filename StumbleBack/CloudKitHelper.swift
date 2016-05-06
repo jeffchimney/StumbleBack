@@ -14,6 +14,15 @@ class CloudKitHelper {
     var publicDB : CKDatabase
     let privateDB : CKDatabase
     
+    var returnedHeight = ""
+    var returnedWeight = ""
+    var returnedComfortableWalk = ""
+    var returnedHardWalk = ""
+    var returnedImpossibleWalk = ""
+    var returnedHeightSystem = ""
+    var returnedWeightSystem = ""
+    var returnedDistanceSystem = ""
+    
     init() {
         container = CKContainer.defaultContainer()
         publicDB = container.publicCloudDatabase
@@ -84,19 +93,21 @@ class CloudKitHelper {
         })
     }
     
-    func loadDistancesFromCloudForId(deviceId: String) -> CKRecord {
+    func getHeight(deviceId: String) -> String {
         let deviceIdRecordName = CKRecordID(recordName: deviceId)
-        var result: CKRecord
+        var result: CKRecord = CKRecord(recordType: "User")
         
         publicDB.fetchRecordWithID(deviceIdRecordName, completionHandler: { (results, error) -> Void in
             if error != nil {
+                self.returnedHeight = String(results!["ComfortableWalk"]!)
                 print(error)
             } else {
-                print(results)
                 result = results!
+                self.returnedHeight = String(result["ComfortableWalk"]!)
             }
-            
         })
-        return result
+        print(self.returnedHeight)
+        //resultAsRecordValue = result["ComfortableWalk"]!
+        return self.returnedHeight
     }
 }

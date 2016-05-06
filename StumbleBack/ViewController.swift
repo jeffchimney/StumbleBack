@@ -9,6 +9,7 @@
 
 import UIKit
 import MapKit
+import CloudKit
 
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark:MKPlacemark)
@@ -97,7 +98,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //Add the recognizer to your view.
         menuSlider.addGestureRecognizer(swipeRecognizer)
         
-        cloudKitHelper.loadDistancesFromCloudForId(deviceId)
+        var height = cloudKitHelper.getHeight(deviceId)
+        //print(height)
+        
+        //var comfortableWalkDistance: CKRecordValue = result["DeviceId"]!
+        //print(comfortableWalkDistance)
         
         //this wont always be hard coded.
         comfortableDistance = 1000
