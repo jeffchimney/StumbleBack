@@ -45,29 +45,35 @@ class CloudKitHelper {
         })
     }
     
-    func savePersonalSettings(deviceId: String, weight: String, height: String, comfortableDistance: Double, difficultDistance: Double, ImpossibleDistance: Double) {
+    func savePersonalSettings(deviceId: String, weight: String, height: String, comfortableDistance: Double, difficultDistance: Double, impossibleDistance: Double, heightSystem: String, weightSystem: String, distanceSystem: String) {
         let deviceIdRecordName = CKRecordID(recordName: deviceId)
         let deviceIdRecord = CKRecord(recordType: "User", recordID: deviceIdRecordName)
         
         publicDB.fetchRecordWithID(deviceIdRecordName, completionHandler: { record, error in
             if let fetchError = error {
                 print("Record was not found, so one was created.")
-                deviceIdRecord.setValue(comfortableDistance, forKey: "ComfortableDistance")
-                deviceIdRecord.setValue(difficultDistance, forKey: "DifficultDistance")
-                deviceIdRecord.setValue(ImpossibleDistance, forKey: "ImpossibleDistance")
+                deviceIdRecord.setValue(comfortableDistance, forKey: "ComfortableWalk")
+                deviceIdRecord.setValue(difficultDistance, forKey: "DifficultWalk")
+                deviceIdRecord.setValue(impossibleDistance, forKey: "ImpossibleWalk")
                 deviceIdRecord.setValue(weight, forKey: "Weight")
                 deviceIdRecord.setValue(height, forKey: "Height")
+                deviceIdRecord.setValue(heightSystem, forKey: "HeightSystem")
+                deviceIdRecord.setValue(weightSystem, forKey: "WeightSystem")
+                deviceIdRecord.setValue(distanceSystem, forKey: "DistanceSystem")
                 self.publicDB.saveRecord(deviceIdRecord, completionHandler: {(_,error) -> Void in
                     if (error != nil) {
                         print(error)
                     }
                 })
             } else {
-                record!.setObject(comfortableDistance, forKey: "ComfortableDistance")
-                record!.setObject(difficultDistance, forKey: "DifficultDistance")
-                record!.setObject(ImpossibleDistance, forKey: "ImpossibleDistance")
+                record!.setObject(comfortableDistance, forKey: "ComfortableWalk")
+                record!.setObject(difficultDistance, forKey: "DifficultWalk")
+                record!.setObject(impossibleDistance, forKey: "ImpossibleWalk")
                 record!.setObject(weight, forKey: "Weight")
                 record!.setObject(height, forKey: "Height")
+                record!.setObject(heightSystem, forKey: "HeightSystem")
+                record!.setObject(weightSystem, forKey: "WeightSystem")
+                record!.setObject(distanceSystem, forKey: "DistanceSystem")
                 self.publicDB.saveRecord(record!, completionHandler: {(_,error) -> Void in
                     if (error != nil) {
                         print(error)
@@ -76,10 +82,21 @@ class CloudKitHelper {
             }
             
         })
+    }
     
-        //var modifyRecord = CKModifyRecordsOperation(recordsToSave: [deviceIdRecord], recordIDsToDelete: nil)
-        //modifyRecord.savePolicy = .AllKeys
-        //modifyRecord.qualityOfService = .UserInitiated
-        //publicDB.addOperation(modifyRecord)    
+    func loadDistancesFromCloudForId(deviceId: String) -> CKRecord {
+        let deviceIdRecordName = CKRecordID(recordName: deviceId)
+        var result: CKRecord
+        
+        publicDB.fetchRecordWithID(deviceIdRecordName, completionHandler: { (results, error) -> Void in
+            if error != nil {
+                print(error)
+            } else {
+                print(results)
+                result = results!
+            }
+            
+        })
+        return result
     }
 }

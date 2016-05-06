@@ -97,6 +97,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //Add the recognizer to your view.
         menuSlider.addGestureRecognizer(swipeRecognizer)
         
+        cloudKitHelper.loadDistancesFromCloudForId(deviceId)
+        
         //this wont always be hard coded.
         comfortableDistance = 1000
         difficultDistance = 2000
