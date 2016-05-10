@@ -21,6 +21,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var resultSearchController:UISearchController? = nil
     
     var timer = NSTimer()
+    var uiTimer = NSTimer()
     
     @IBOutlet weak var menuSlider: UIImageView!
     @IBOutlet weak var tabBar: UIToolbar!
@@ -40,6 +41,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //var deviceId = ""
     
     var cloudKitHelper = CloudKitHelper()
+    var drunkLevel = 0
     
     
     // ---------------------------------------------------------------------
@@ -52,7 +54,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         // user info
         let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
-        print(deviceId)
+        //print(deviceId)
         cloudKitHelper.saveDeviceIdRecord(deviceId)
         
         // Assign our search table view controller to handle to searches
@@ -99,7 +101,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         menuSlider.addGestureRecognizer(swipeRecognizer)
         
         var height = cloudKitHelper.getHeight(deviceId)
-        //print(height)
+        print(height)
+        print("Hi")
         
         //var comfortableWalkDistance: CKRecordValue = result["DeviceId"]!
         //print(comfortableWalkDistance)
@@ -109,7 +112,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         difficultDistance = 2000
         wontWalkFartherThanDistance = 2500
         
+        drunkLevel = Int(arc4random_uniform(4))
+        
+        /* for drunk level 1, UI is green
+        if drunkLevel == 0 {
+            tabBar.barTintColor = UIColor.greenColor()
+            navigationController?.navigationBar.barTintColor = UIColor.greenColor()
+        } else if drunkLevel == 1 {
+            // for drunk level 2
+            tabBar.barTintColor = UIColor.yellowColor()
+            navigationController?.navigationBar.barTintColor = UIColor.yellowColor()
+        } else if drunkLevel == 2 {
+            // for drunk level 3
+            tabBar.barTintColor = UIColor.orangeColor()
+            navigationController?.navigationBar.barTintColor = UIColor.orangeColor()
+        } else {
+            // for drunk level 4
+            tabBar.barTintColor = UIColor.redColor()
+            navigationController?.navigationBar.barTintColor = UIColor.redColor()
+        } */
+        
+        updateUIColor()
+        
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateWalkingRadiusBasedOnLocation), userInfo: nil, repeats: true)
+        uiTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateUIColor), userInfo: nil, repeats: true)
     }
     
     var viewLayedOutSubviews = false
@@ -164,6 +190,98 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let toViewController = segue.destinationViewController as UIViewController
         self.modalPresentationStyle = UIModalPresentationStyle.Custom
         toViewController.transitioningDelegate = transitionOperator
+    }
+    
+    // update UIColor based on time of day
+    func updateUIColor() {
+        var date = NSDate()
+        var calendar = NSCalendar.currentCalendar()
+        var components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+        var hour = components.hour
+        var minutes = components.minute
+        var seconds = components.second
+        
+        var currentCode = "\(hour)\(minutes)\(seconds)"
+        if (hour < 10) && (minutes < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let minutesString = "0\(minutes)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hourString)\(minutesString)\(secondsString)"
+        } else if (hour < 10) && (minutes < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let minutesString = "0\(minutes)"
+            currentCode = "\(hourString)\(minutesString)\(seconds)"
+        } else if (hour < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hourString)\(minutes)\(secondsString)"
+        } else if (minutes < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let minutesString = "0\(minutes)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hour)\(minutesString)\(secondsString)"
+        } else if (hour < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            currentCode = "\(hourString)\(minutes)\(seconds)"
+        } else if (minutes < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let minutesString = "0\(minutes)"
+            currentCode = "\(hour)\(minutesString)\(seconds)"
+        } else if (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hour)\(minutes)\(secondsString)"
+        }
+        print(currentCode)
+        let currentCodeInt: Int = Int(currentCode)!
+        tabBar.barTintColor = UIColor(netHex: currentCodeInt)
+        navigationController?.navigationBar.barTintColor = UIColor(netHex: currentCodeInt)
     }
     
     // --------------------------------------------------------------
@@ -278,5 +396,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
+    }
+    
+    @IBAction func homeButton(sender: AnyObject) {
+        tabBar.barTintColor = UIColor.blueColor()
+    }
+}
+
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    
+    convenience init(netHex:Int) {
+        self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
     }
 }

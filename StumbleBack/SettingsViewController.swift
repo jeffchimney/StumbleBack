@@ -39,8 +39,14 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     @IBOutlet weak var hardPicker: UIPickerView!
     @IBOutlet weak var impossiblePicker: UIPickerView!
     
+    var uiTimer = NSTimer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateUIColor()
+        
+        uiTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SettingsViewController.updateUIColor), userInfo: nil, repeats: true)
         
         deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
         
@@ -281,5 +287,95 @@ class SettingsViewController : UITableViewController, UIPickerViewDelegate, UIPi
     }
     @IBAction func cancelChanges(sender: AnyObject) {
     // go back to menu page
+    }
+    
+    func updateUIColor() {
+        var date = NSDate()
+        var calendar = NSCalendar.currentCalendar()
+        var components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+        var hour = components.hour
+        var minutes = components.minute
+        var seconds = components.second
+        
+        var currentCode = "\(hour)\(minutes)\(seconds)"
+        if (hour < 10) && (minutes < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let minutesString = "0\(minutes)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hourString)\(minutesString)\(secondsString)"
+        } else if (hour < 10) && (minutes < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let minutesString = "0\(minutes)"
+            currentCode = "\(hourString)\(minutesString)\(seconds)"
+        } else if (hour < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hourString)\(minutes)\(secondsString)"
+        } else if (minutes < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let minutesString = "0\(minutes)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hour)\(minutesString)\(secondsString)"
+        } else if (hour < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            currentCode = "\(hourString)\(minutes)\(seconds)"
+        } else if (minutes < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let minutesString = "0\(minutes)"
+            currentCode = "\(hour)\(minutesString)\(seconds)"
+        } else if (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hour)\(minutes)\(secondsString)"
+        }
+        print(currentCode)
+        let currentCodeInt: Int = Int(currentCode)!
+        self.view.backgroundColor = UIColor(netHex: currentCodeInt)
     }
 }

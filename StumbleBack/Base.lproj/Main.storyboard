@@ -342,14 +342,6 @@
                                     <constraint firstAttribute="height" constant="40" id="l6t-EH-kLO"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00W-bX-QXM">
-                                <rect key="frame" x="275" y="72" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="7AK-P4-Ghf"/>
-                                    <constraint firstAttribute="width" constant="50" id="rNz-17-U6n"/>
-                                </constraints>
-                                <state key="normal" image="homeIcon"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -359,14 +351,23 @@
                             <constraint firstItem="JFR-ck-pHe" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="QjI-gY-skX"/>
                             <constraint firstItem="eSL-6y-pZG" firstAttribute="leading" secondItem="JFR-ck-pHe" secondAttribute="leading" id="R59-B2-WQ5"/>
                             <constraint firstItem="2lb-RH-Kr0" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="3" id="V1l-3b-4fV"/>
-                            <constraint firstItem="00W-bX-QXM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="hUi-ni-Lf5"/>
-                            <constraint firstItem="00W-bX-QXM" firstAttribute="centerX" secondItem="eSL-6y-pZG" secondAttribute="centerX" id="n9c-sc-7Zh"/>
                             <constraint firstItem="eSL-6y-pZG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="sbg-l6-kU5"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="eSL-6y-pZG" secondAttribute="bottom" constant="41" id="scU-QO-crz"/>
                             <constraint firstItem="2lb-RH-Kr0" firstAttribute="leading" secondItem="JFR-ck-pHe" secondAttribute="leading" id="uft-4L-1ds"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Z8M-m2-bY7"/>
+                    <navigationItem key="navigationItem" id="Z8M-m2-bY7">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="98Y-Eb-47a">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="00W-bX-QXM">
+                                <rect key="frame" x="20" y="-3" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="homeIcon"/>
+                                <connections>
+                                    <action selector="homeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GNa-ie-2Uz"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="eSL-6y-pZG" id="dAK-Pc-EB6"/>
                         <outlet property="menuSlider" destination="2lb-RH-Kr0" id="P1R-WM-3mF"/>
