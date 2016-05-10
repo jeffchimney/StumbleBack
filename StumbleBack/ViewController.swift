@@ -22,6 +22,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var timer = NSTimer()
     var uiTimer = NSTimer()
+    var circleTimer = NSTimer()
     
     @IBOutlet weak var menuSlider: UIImageView!
     @IBOutlet weak var tabBar: UIToolbar!
@@ -38,6 +39,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var innerCircle: MKCircle = MKCircle()
     var middleCircle: MKCircle = MKCircle()
     var outerCircle: MKCircle = MKCircle()
+    
+    var innerOverlay:MKOverlay = MKCircle()
+    var middleOverlay:MKOverlay = MKCircle()
+    var outerOverlay:MKOverlay = MKCircle()
     //var deviceId = ""
     
     var cloudKitHelper = CloudKitHelper()
@@ -136,6 +141,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateWalkingRadiusBasedOnLocation), userInfo: nil, repeats: true)
         uiTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateUIColor), userInfo: nil, repeats: true)
+        circleTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateCircleColor), userInfo: nil, repeats: true)
     }
     
     var viewLayedOutSubviews = false
@@ -284,6 +290,95 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         navigationController?.navigationBar.barTintColor = UIColor(netHex: currentCodeInt)
     }
     
+    func getHexValueForCurrentTime() -> Int {
+        var date = NSDate()
+        var calendar = NSCalendar.currentCalendar()
+        var components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+        var hour = components.hour
+        var minutes = components.minute
+        var seconds = components.second
+        
+        var currentCode = "\(hour)\(minutes)\(seconds)"
+        if (hour < 10) && (minutes < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let minutesString = "0\(minutes)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hourString)\(minutesString)\(secondsString)"
+        } else if (hour < 10) && (minutes < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let minutesString = "0\(minutes)"
+            currentCode = "\(hourString)\(minutesString)\(seconds)"
+        } else if (hour < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hourString)\(minutes)\(secondsString)"
+        } else if (minutes < 10) && (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let minutesString = "0\(minutes)"
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hour)\(minutesString)\(secondsString)"
+        } else if (hour < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let hourString = "0\(hour)"
+            currentCode = "\(hourString)\(minutes)\(seconds)"
+        } else if (minutes < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let minutesString = "0\(minutes)"
+            currentCode = "\(hour)\(minutesString)\(seconds)"
+        } else if (seconds < 10) {
+            date = NSDate()
+            calendar = NSCalendar.currentCalendar()
+            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+            hour = components.hour
+            minutes = components.minute
+            seconds = components.second
+            
+            let secondsString = "0\(seconds)"
+            currentCode = "\(hour)\(minutes)\(secondsString)"
+        }
+        let currentCodeInt: Int = Int(currentCode)!
+        return currentCodeInt
+    }
+    
     // --------------------------------------------------------------
     // ----------------------- MAP FUNCTIONS ------------------------
     // --------------------------------------------------------------
@@ -339,25 +434,50 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         if let overlay = overlay as? MKCircle {
+            
             if overlay == innerCircle {
+                innerOverlay = overlay
                 let circleRenderer = MKCircleRenderer(circle: overlay)
-                circleRenderer.fillColor = UIColor.blueColor()
+                let currentColor = getHexValueForCurrentTime()
+                circleRenderer.fillColor = UIColor(netHex: currentColor)
                 circleRenderer.alpha = 0.5
                 return circleRenderer
             } else if overlay == middleCircle {
+                middleOverlay = overlay
                 let circleRenderer = MKCircleRenderer(circle: overlay)
-                circleRenderer.fillColor = UIColor.blueColor()
+                let currentColor = getHexValueForCurrentTime()
+                circleRenderer.fillColor = UIColor(netHex: currentColor)
                 circleRenderer.alpha = 0.25
                 return circleRenderer
             } else if overlay == outerCircle {
+                outerOverlay = overlay
                 let circleRenderer = MKCircleRenderer(circle: overlay)
-                circleRenderer.fillColor = UIColor.blueColor()
+                let currentColor = getHexValueForCurrentTime()
+                circleRenderer.fillColor = UIColor(netHex: currentColor)
                 circleRenderer.alpha = 0.125
                 return circleRenderer
             }
         }
         let defaultCircle = MKCircleRenderer()
         return defaultCircle
+    }
+    
+    func updateCircleColor() {
+        if let renderer = mapView.rendererForOverlay(innerOverlay) as? MKCircleRenderer {
+            let colorValue = getHexValueForCurrentTime()
+            renderer.fillColor = UIColor(netHex: colorValue)
+            renderer.alpha = 0.5
+        }
+        if let renderer = mapView.rendererForOverlay(middleOverlay) as? MKCircleRenderer {
+            let colorValue = getHexValueForCurrentTime()
+            renderer.fillColor = UIColor(netHex: colorValue)
+            renderer.alpha = 0.25
+        }
+        if let renderer = mapView.rendererForOverlay(outerOverlay) as? MKCircleRenderer {
+            let colorValue = getHexValueForCurrentTime()
+            renderer.fillColor = UIColor(netHex: colorValue)
+            renderer.alpha = 0.125
+        }
     }
     
     func updateWalkingRadiusBasedOnLocation() {
