@@ -30,9 +30,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     let locationManager = CLLocationManager()
     let stumbleButton = UIButton(type: UIButtonType.Custom)
     
-    var comfortableDistance = 0
-    var difficultDistance = 0
-    var wontWalkFartherThanDistance = 0
+    var comfortableDistance: CLLocationDistance = 0
+    var difficultDistance: CLLocationDistance  = 0
+    var wontWalkFartherThanDistance: CLLocationDistance  = 0
     
     var transitionOperator = TransitionOperator()
     
@@ -200,92 +200,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     // update UIColor based on time of day
     func updateUIColor() {
-        var date = NSDate()
-        var calendar = NSCalendar.currentCalendar()
-        var components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-        var hour = components.hour
-        var minutes = components.minute
-        var seconds = components.second
-        
-        var currentCode = "\(hour)\(minutes)\(seconds)"
-        if (hour < 10) && (minutes < 10) && (seconds < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let hourString = "0\(hour)"
-            let minutesString = "0\(minutes)"
-            let secondsString = "0\(seconds)"
-            currentCode = "\(hourString)\(minutesString)\(secondsString)"
-        } else if (hour < 10) && (minutes < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let hourString = "0\(hour)"
-            let minutesString = "0\(minutes)"
-            currentCode = "\(hourString)\(minutesString)\(seconds)"
-        } else if (hour < 10) && (seconds < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let hourString = "0\(hour)"
-            let secondsString = "0\(seconds)"
-            currentCode = "\(hourString)\(minutes)\(secondsString)"
-        } else if (minutes < 10) && (seconds < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let minutesString = "0\(minutes)"
-            let secondsString = "0\(seconds)"
-            currentCode = "\(hour)\(minutesString)\(secondsString)"
-        } else if (hour < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let hourString = "0\(hour)"
-            currentCode = "\(hourString)\(minutes)\(seconds)"
-        } else if (minutes < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let minutesString = "0\(minutes)"
-            currentCode = "\(hour)\(minutesString)\(seconds)"
-        } else if (seconds < 10) {
-            date = NSDate()
-            calendar = NSCalendar.currentCalendar()
-            components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
-            hour = components.hour
-            minutes = components.minute
-            seconds = components.second
-            
-            let secondsString = "0\(seconds)"
-            currentCode = "\(hour)\(minutes)\(secondsString)"
-        }
-        print(currentCode)
-        let currentCodeInt: Int = Int(currentCode)!
+        let currentCodeInt: Int = getHexValueForCurrentTime()
         tabBar.barTintColor = UIColor(netHex: currentCodeInt)
         navigationController?.navigationBar.barTintColor = UIColor(netHex: currentCodeInt)
     }
@@ -516,6 +431,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
+        
+        let distanceInMeters = locationManager.location?.distanceFromLocation(placemark.location!)
+        if (distanceInMeters <= comfortableDistance) {
+            print("Easy Peasy")
+        } else if distanceInMeters <= difficultDistance && distanceInMeters > comfortableDistance {
+            print("Go Ahead")
+        } else if distanceInMeters <= wontWalkFartherThanDistance && distanceInMeters > difficultDistance {
+            print("Uhh...good luck.")
+        } else {
+            print("Don't fucking do it.")
+        }
     }
     
     @IBAction func homeButton(sender: AnyObject) {
