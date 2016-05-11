@@ -59,7 +59,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         // user info
         let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
-        //print(deviceId)
         cloudKitHelper.saveDeviceIdRecord(deviceId)
         
         // Assign our search table view controller to handle to searches
@@ -107,7 +106,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         var height = cloudKitHelper.getHeight(deviceId)
         print(height)
-        print("Hi")
         
         //var comfortableWalkDistance: CKRecordValue = result["DeviceId"]!
         //print(comfortableWalkDistance)
@@ -117,26 +115,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         difficultDistance = 2000
         wontWalkFartherThanDistance = 2500
         
-        drunkLevel = Int(arc4random_uniform(4))
-        
-        /* for drunk level 1, UI is green
-        if drunkLevel == 0 {
-            tabBar.barTintColor = UIColor.greenColor()
-            navigationController?.navigationBar.barTintColor = UIColor.greenColor()
-        } else if drunkLevel == 1 {
-            // for drunk level 2
-            tabBar.barTintColor = UIColor.yellowColor()
-            navigationController?.navigationBar.barTintColor = UIColor.yellowColor()
-        } else if drunkLevel == 2 {
-            // for drunk level 3
-            tabBar.barTintColor = UIColor.orangeColor()
-            navigationController?.navigationBar.barTintColor = UIColor.orangeColor()
-        } else {
-            // for drunk level 4
-            tabBar.barTintColor = UIColor.redColor()
-            navigationController?.navigationBar.barTintColor = UIColor.redColor()
-        } */
-        
+        // updateUIColor so it doesnt load as default white
         updateUIColor()
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateWalkingRadiusBasedOnLocation), userInfo: nil, repeats: true)
@@ -320,7 +299,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func getDirections(){
         if let selectedPin = selectedPin {
             let mapItem = MKMapItem(placemark: selectedPin)
-            print("You selected a pin")
+            // do something like open a small ui frame above the pin
         }
     }
     
@@ -441,6 +420,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             print("Uhh...good luck.")
         } else {
             print("Don't fucking do it.")
+            // delay alert popup until marker has been dropped and map pans over to it
+            let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                let alertController = UIAlertController(title: "That's way too far, man.", message:"Go home, you're drunk.", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Call a Cab", style: UIAlertActionStyle.Default,handler:{(alert: UIAlertAction!) in
+                    // call a taxi
+                    let phone = "tel://2503077103";
+                    let url:NSURL = NSURL(string:phone)!;
+                    UIApplication.sharedApplication().openURL(url);
+                }))
+                
+                alertController.addAction(UIAlertAction(title: "Uber", style: UIAlertActionStyle.Default,handler:{(alert: UIAlertAction!) in
+                    // get an uber
+                }))
+                // cancel
+                alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default,handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
