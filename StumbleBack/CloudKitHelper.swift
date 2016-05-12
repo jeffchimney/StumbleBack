@@ -92,22 +92,4 @@ class CloudKitHelper {
             
         })
     }
-    
-    func getHeight(deviceId: String) -> String {
-        let deviceIdRecordName = CKRecordID(recordName: deviceId)
-        var result: CKRecord = CKRecord(recordType: "User")
-        
-        publicDB.fetchRecordWithID(deviceIdRecordName, completionHandler: { (results, error) -> Void in
-            if error != nil {
-                self.returnedHeight = String(results!["ComfortableWalk"]!)
-                print(error)
-            } else {
-                result = results!
-                self.returnedHeight = String(result["ComfortableWalk"]!)
-            }
-        })
-        print(self.returnedHeight)
-        //resultAsRecordValue = result["ComfortableWalk"]!
-        return self.returnedHeight
-    }
 }

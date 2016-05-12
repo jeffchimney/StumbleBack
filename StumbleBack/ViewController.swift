@@ -29,10 +29,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBOutlet weak var mapView: MKMapView!
     let locationManager = CLLocationManager()
     let stumbleButton = UIButton(type: UIButtonType.Custom)
-    
-    var comfortableDistance: CLLocationDistance = 0
-    var difficultDistance: CLLocationDistance  = 0
-    var wontWalkFartherThanDistance: CLLocationDistance  = 0
+
     
     var transitionOperator = TransitionOperator()
     
@@ -47,6 +44,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var cloudKitHelper = CloudKitHelper()
     var drunkLevel = 0
+    var height = ""
+    var weight = ""
+    var heightSystem = ""
+    var weightSystem = ""
+    var comfortable = ""
+    var difficult = ""
+    var impossible = ""
+    var comfortableDistance: CLLocationDistance = 0
+    var difficultDistance: CLLocationDistance  = 0
+    var wontWalkFartherThanDistance: CLLocationDistance  = 0
+    
+    var container : CKContainer!
+    var publicDB : CKDatabase!
+    var privateDB : CKDatabase!
     
     
     // ---------------------------------------------------------------------
@@ -54,6 +65,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     // ---------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        // cloudkit initializers
+        container = CKContainer.defaultContainer()
+        publicDB = container.publicCloudDatabase
+        privateDB = container.privateCloudDatabase
         
         mapView.delegate = self
         
@@ -104,16 +119,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //Add the recognizer to your view.
         menuSlider.addGestureRecognizer(swipeRecognizer)
         
-        var height = cloudKitHelper.getHeight(deviceId)
-        print(height)
+        //print(height)
         
         //var comfortableWalkDistance: CKRecordValue = result["DeviceId"]!
         //print(comfortableWalkDistance)
-        
-        //this wont always be hard coded.
-        comfortableDistance = 1000
-        difficultDistance = 2000
-        wontWalkFartherThanDistance = 2500
         
         // updateUIColor so it doesnt load as default white
         updateUIColor()
@@ -121,6 +130,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateWalkingRadiusBasedOnLocation), userInfo: nil, repeats: true)
         uiTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateUIColor), userInfo: nil, repeats: true)
         circleTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ViewController.updateCircleColor), userInfo: nil, repeats: true)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        //this wont always be hard coded.
+        comfortableDistance = 1000
+        difficultDistance = 2000
+        wontWalkFartherThanDistance = 2500
+        
+        // user info
+        let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+        cloudKitHelper.saveDeviceIdRecord(deviceId)
+        getFromCloudKit(deviceId)
     }
     
     var viewLayedOutSubviews = false
@@ -444,6 +465,42 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func homeButton(sender: AnyObject) {
         tabBar.barTintColor = UIColor.blueColor()
+    }
+    
+    // --------------------------------------------------------------
+    // ------------------ CLOUDKIT GET FUNCTIONS -------------------- // this is here instead of in the cloudkit helper because I need to be
+    // -------------------------------------------------------------- // able to pass the associated variable back to this view controller.
+    
+    func getFromCloudKit(deviceId: String) {
+        let deviceIdRecordName = CKRecordID(recordName: deviceId)
+        var result: CKRecord = CKRecord(recordType: "User")
+        
+        publicDB.fetchRecordWithID(deviceIdRecordName, completionHandler: { (results, error) -> Void in
+            if error != nil {
+                // something went wrong and couldnt reach cloudkit
+                print(error)
+            } else {
+                result = results!
+                self.height = String(result["Height"]!)
+                self.weight = String(result["Weight"]!)
+                self.heightSystem = String(result["HeightSystem"]!)
+                self.weightSystem = String(result["WeightSystem"]!)
+                self.comfortable = String(result["ComfortableWalk"]!)
+                self.difficult = String(result["DifficultWalk"]!)
+                self.impossible = String(result["ImpossibleWalk"]!)
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.mapView.reloadInputViews()
+                    print(self.height)
+                    print(self.weight)
+                    print(self.heightSystem)
+                    print(self.weightSystem)
+                    print(self.comfortable)
+                    print(self.difficult)
+                    print(self.impossible)
+                })
+            }
+        })
     }
 }
 
